@@ -7,8 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "tsc --noEmit && eslint --ext .js,.jsx,.ts,.tsx src/**/*",
-    "format": "eslint --ext .js,.jsx,.ts,.tsx --fix src/**/*"
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src/**/*",
+    "format": "eslint --ext .js,.jsx,.ts,.tsx --fix src/**/*",
+    "precommit": "tsc --noEmit && yarn test && yarn lint"
   },
   "dependencies": {
     "react": "16.11.0",
@@ -52,7 +53,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn lint"
+      "pre-commit": "yarn precommit"
     }
   }
 }
