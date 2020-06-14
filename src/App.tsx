@@ -16,6 +16,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+// @ts-ignore
+import { TEST } from 'react-native-dotenv';
+
 declare const global: { HermesInternal: null | any };
 
 const App = () => {
@@ -32,6 +35,7 @@ const App = () => {
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
+          <Text>{TEST}</Text>
           <View style={styles.body}>
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
