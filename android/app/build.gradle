@@ -147,8 +147,8 @@ android {
         debug {
             if (project.hasProperty('DEVELOPMENT_KEY_STORE_FILE')) {
                 storeFile file(DEVELOPMENT_KEY_STORE_FILE)
-                storePassword DEVELOPMENT_KEY_ALIAS
-                keyAlias DEVELOPMENT_STORE_PASSWORD
+                storePassword DEVELOPMENT_STORE_PASSWORD
+                keyAlias DEVELOPMENT_KEY_ALIAS
                 keyPassword DEVELOPMENT_KEY_PASSWORD
             }
         }
