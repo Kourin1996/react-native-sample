@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src/**/*",
     "format": "eslint --ext .js,.jsx,.ts,.tsx --fix src/**/*",
-    "precommit": "tsc --noEmit && yarn lint",
+    "precommit": "yarn lint",
     "react-devtools": "react-devtools"
   },
   "dependencies": {
@@ -19,7 +19,9 @@
     "@react-navigation/stack": "^5.5.1",
     "@types/": "react-navigation/stack",
     "@types/lodash": "^4.14.155",
+    "@types/react-native-rss-parser": "^1.4.0",
     "@types/react-navigation": "^3.4.0",
+    "@types/realm": "^1.13.0",
     "lodash": "^4.17.15",
     "react": "16.11.0",
     "react-devtools": "^4.7.0",
@@ -27,13 +29,15 @@
     "react-native-elements": "^2.0.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-reanimated": "^1.9.0",
+    "react-native-rss-parser": "^1.4.0",
     "react-native-safe-area-context": "^3.0.5",
     "react-native-screens": "^2.8.0",
     "react-native-typography": "^1.4.1",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.3.9",
     "react-navigation-stack": "^2.7.0",
-    "react-navigation-tabs": "^2.8.13"
+    "react-navigation-tabs": "^2.8.13",
+    "realm": "^6.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",

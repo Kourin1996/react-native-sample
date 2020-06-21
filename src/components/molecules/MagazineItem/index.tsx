@@ -25,14 +25,14 @@ const MagazineItem: React.FC<MagazineItemProps> = (
       <View style={styles.container}>
         {/* For Image */}
         <View>
-          <Image source={{ uri: item.imageUrls[0] }} style={styles.image} />
+          <Image source={{ uri: item.imageUrl }} style={styles.image} />
         </View>
         <View style={styles.rightColumnContainer}>
           <Text style={styles.title} numberOfLines={2}>
             {item.title}
           </Text>
           <Text style={styles.summary} numberOfLines={3}>
-            {item.summary}
+            {item.body}
           </Text>
         </View>
       </View>

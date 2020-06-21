@@ -1,6 +1,6 @@
 type NewsItem = {
-  id: string;
-  sourceId: string;
+  id?: string;
+  sourceId?: string;
   title: string;
   summary: string;
   body: string;
