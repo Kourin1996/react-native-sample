@@ -2,6 +2,7 @@ import React from 'react';
 import SourcesScreen from '../scenes/sources';
 import SourceItemsScreen from '../scenes/souce-items';
 import NewSourceScreen from '../scenes/new-source';
+import { NewsSource } from 'domains';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createStackNavigator } = require('@react-navigation/stack');
@@ -17,7 +18,9 @@ export enum SourcesScreenTypes {
 
 export type SourcesStackParamList = {
   Sources: void;
-  SourceItems: void;
+  SourceItems: {
+    source?: NewsSource;
+  };
   NewSource: void;
 };
 

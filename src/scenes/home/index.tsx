@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
+import OperationContext from '../../hooks/operation-context';
 import Header from '../../components/organisms/Header';
 import MagazineList from '../../components/organisms/MagazineList';
 import { NewsItem } from 'domains';
@@ -13,6 +14,16 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
   const onItemTouched = React.useCallback((item: NewsItem) => {
     console.log('touched', item);
   }, []);
+
+  const operationContext = React.useContext(OperationContext);
+  React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async (): Promise<void> => {
+      await operationContext?.loadItemsBySource();
+    })();
+    console.log('Home::useEffect');
+  }, [operationContext?.loadItemsBySource]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header

@@ -6,6 +6,7 @@ import {
   SourcesStackParamList,
 } from '../../navigations/sources';
 import NewsSourcesContext from '../../hooks/news-sources-context';
+import OperationContext from '../../hooks/operation-context';
 import { NewsSource } from 'domains';
 import NewsSourceList from '../../components/organisms/SourceList';
 import Header from '../../components/organisms/Header';
@@ -21,15 +22,15 @@ const SourcesScreen: React.FC<SourcesScreenProps> = ({
   navigation,
 }: SourcesScreenProps) => {
   const sources = React.useContext(NewsSourcesContext);
+  const operationContext = React.useContext(OperationContext);
   const onSourceTouched = React.useCallback(
     (source: NewsSource) => {
-      console.log('touched', source);
-      navigation.navigate(SourcesScreenTypes.SourceItems, {
-        itemId: 86,
-        otherParam: 'anything you want here',
-      });
+      if (operationContext !== null) {
+        operationContext.resetItems();
+      }
+      navigation.navigate(SourcesScreenTypes.SourceItems, { source });
     },
-    [navigation],
+    [operationContext, navigation],
   );
   const onAddIconPressed = React.useCallback(() => {
     navigation.navigate(SourcesScreenTypes.NewSource);

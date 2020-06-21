@@ -35,13 +35,14 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
 
       try {
         await operationContext.addSource(name, url);
+        setIsLoading(false);
+        navigation.goBack();
       } catch (error) {
         console.error(error);
-      } finally {
         setIsLoading(false);
       }
     }
-  }, [setIsLoading, name, url]);
+  }, [operationContext, setIsLoading, name, url]);
 
   return (
     <SafeAreaView style={styles.container}>

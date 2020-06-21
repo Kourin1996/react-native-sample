@@ -76,7 +76,6 @@ const App: React.FC<void> = () => {
       }
 
       setSources(newsSourceRepo.getAll());
-      setItems(newsItemRepo.getItemsBySourceIndex(0, 10));
       setLoading(false);
     });
 
@@ -119,9 +118,30 @@ const App: React.FC<void> = () => {
     [newsSourceRepo, newsItemRepo],
   );
 
-  const operations = {
-    addSource,
-  };
+  const loadItemsBySource = React.useCallback(
+    (source?: NewsSource) => {
+      if (newsItemRepo !== null) {
+        if (source?.id !== undefined) {
+          setItems(newsItemRepo.getItemsBySourceIndex(source.id, 15));
+        } else {
+          setItems(newsItemRepo.getItems(15));
+        }
+      }
+    },
+    [newsItemRepo, setItems],
+  );
+
+  const resetItems = React.useCallback(() => {
+    setItems([]);
+  }, [setItems]);
+
+  const operations = React.useMemo(() => {
+    return {
+      addSource,
+      loadItemsBySource,
+      resetItems,
+    };
+  }, [addSource, loadItemsBySource, resetItems]);
 
   return (
     <NewsSourcesContext.Provider value={sources}>
