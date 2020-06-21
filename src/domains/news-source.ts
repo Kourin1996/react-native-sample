@@ -1,5 +1,5 @@
 type NewsSource = {
-  id?: string;
+  id?: number;
   name: string;
   description: string;
   rssUrl: string;

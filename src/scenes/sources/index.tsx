@@ -31,11 +31,18 @@ const SourcesScreen: React.FC<SourcesScreenProps> = ({
     },
     [navigation],
   );
+  const onAddIconPressed = React.useCallback(() => {
+    navigation.navigate(SourcesScreenTypes.NewSource);
+  }, [navigation]);
   return (
     <SafeAreaView style={styles.container}>
       <Header
         centerComponent={{ text: 'Sources', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'add', color: '#fff' }}
+        rightComponent={{
+          icon: 'add',
+          color: '#fff',
+          onPress: onAddIconPressed,
+        }}
       />
       <View style={styles.sourceListContainer}>
         <NewsSourceList sources={sources} onSourceTouched={onSourceTouched} />

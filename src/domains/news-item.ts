@@ -1,11 +1,10 @@
 type NewsItem = {
-  id?: string;
-  sourceId?: string;
+  id?: number;
+  sourceId?: number;
   title: string;
-  summary: string;
   body: string;
-  date: Date;
-  imageUrls: string[];
+  imageUrl?: string;
+  published: Date;
 };
 
 export default NewsItem;
