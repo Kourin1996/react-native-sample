@@ -1,38 +1,25 @@
 import React from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
+import Header from '../../components/organisms/Header';
 import MagazineList from '../../components/organisms/MagazineList';
 import { NewsItem } from 'domains';
-
-const magazineItem = {
-  id: '01',
-  sourceId: '02',
-  title:
-    'Nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-  summary:
-    'Nyaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahoge',
-  body: 'Nyan....',
-  date: new Date(),
-  imageUrls: [
-    'https://static.toiimg.com/thumb/msid-67586673,width-800,height-600,resizemode-75,imgsize-3918697,pt-32,y_pad-40/67586673.jpg',
-  ],
-};
-
-const magazineList = new Array(10).fill(null).map((_, i) => ({
-  ...magazineItem,
-  id: i.toString(),
-}));
+import NewsItemContext from '../../hooks/news-items-context';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HomeScreenProps {}
 
 const HomeScreen: React.FC<HomeScreenProps> = () => {
+  const items = React.useContext(NewsItemContext);
   const onItemTouched = React.useCallback((item: NewsItem) => {
     console.log('touched', item);
   }, []);
   return (
     <SafeAreaView style={styles.container}>
+      <Header
+        centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
+      />
       <View style={styles.itemListContainer}>
-        <MagazineList items={magazineList} onItemTouched={onItemTouched} />
+        <MagazineList items={items} onItemTouched={onItemTouched} />
       </View>
     </SafeAreaView>
   );

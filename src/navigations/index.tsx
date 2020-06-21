@@ -3,13 +3,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import HomeScreen from './scenes/home';
-import NewsScreen from './scenes/news';
-import SettingScreen from './scenes/setting';
+import HomeScreen from '../scenes/home';
+import SourcesNavigation from './sources';
 
 const Tab = createBottomTabNavigator();
 
-const Navigation = () => {
+const RootNavigation: React.FC<void> = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -21,14 +20,14 @@ const Navigation = () => {
         }}
         screenOptions={({ route }) => ({
           // eslint-disable-next-line react/display-name
-          tabBarIcon: ({ focused, color, size }) => {
+          tabBarIcon: (props) => {
+            // eslint-disable-next-line react/prop-types
+            const { color, size } = props;
             let iconName = '';
             if (route.name === 'Home') {
               iconName = 'home';
-            } else if (route.name === 'News') {
+            } else if (route.name === 'Sources') {
               iconName = 'format-list-bulleted';
-            } else if (route.name === 'Setting') {
-              iconName = 'setting';
             }
             return (
               <MaterialCommunityIcon
@@ -40,11 +39,10 @@ const Navigation = () => {
           },
         })}>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="News" component={NewsScreen} />
-        <Tab.Screen name="Setting" component={SettingScreen} />
+        <Tab.Screen name="Sources" component={SourcesNavigation} />
       </Tab.Navigator>
     </NavigationContainer>
   );
 };
 
-export default Navigation;
+export default RootNavigation;

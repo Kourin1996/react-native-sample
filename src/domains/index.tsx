@@ -1,2 +1,2 @@
-export type { default as NewsSource } from './NewsSource';
-export type { default as NewsItem } from './NewsItem';
+export type { default as NewsSource } from './news-source';
+export type { default as NewsItem } from './news-item';
