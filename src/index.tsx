@@ -1,7 +1,9 @@
 import React from 'react';
 
-import Navigator from './navigations';
+import Navigation from './navigation';
 
-const App = () => <Navigator />;
+const App = () => {
+  return <Navigation />;
+};
 
 export default App;
