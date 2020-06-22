@@ -9,17 +9,17 @@ import { HomeStackParamList, HomeScreensTypes } from '../../navigations/home';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface HomeScreenProps {
-  navigation: NavigationScreenProp<
-    HomeStackParamList,
-    HomeScreensTypes.Home
-  >;
+  navigation: NavigationScreenProp<HomeStackParamList, HomeScreensTypes.Home>;
 }
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }: HomeScreenProps) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({
+  navigation,
+}: HomeScreenProps) => {
   const appValue = React.useContext(AppContext);
   const { initialized = false } = appValue ?? {};
 
   const [items, setItems] = React.useState<NewsItem[]>([]);
+
   React.useEffect(() => {
     if (initialized && appValue?.loadItems) {
       const items = appValue.loadItems();
@@ -27,9 +27,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }: HomeScreenProps) 
     }
   }, [initialized]);
 
-  const onItemTouched = React.useCallback((item: NewsItem) => {
-    navigation.navigate(HomeScreensTypes.WebView, { url: item?.url ?? '' });
-  }, [navigation]);
+  const onItemTouched = React.useCallback(
+    (item: NewsItem) => {
+      navigation.navigate(HomeScreensTypes.WebView, { url: item?.url ?? '' });
+    },
+    [navigation],
+  );
 
   return (
     <SafeAreaView style={styles.container}>

@@ -4,6 +4,7 @@ import { NavigationScreenProp } from 'react-navigation';
 import Header from '../../components/organisms/Header';
 import { HomeStackParamList, HomeScreensTypes } from '../../navigations/home';
 import { RouteProp } from '@react-navigation/native';
+import { WebView } from 'react-native-webview';
 
 interface WebViewProps {
   route: RouteProp<HomeStackParamList, HomeScreensTypes.WebView>;
@@ -33,13 +34,16 @@ const WebViewScreen: React.FC<WebViewProps> = ({
         }}
         centerComponent={{ text: url, style: { color: '#fff' } }}
       />
-      <Text>{url}</Text>
+      <WebView style={styles.webview} source={{ uri: url }} />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+  },
+  webview: {
     flex: 1,
   },
 });
