@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
+import AppContext from '../../hooks/app-context';
 import {
   SourcesScreenTypes,
   SourcesStackParamList,
 } from '../../navigations/sources';
-import NewsSourcesContext from '../../hooks/news-sources-context';
-import OperationContext from '../../hooks/operation-context';
 import { NewsSource } from 'domains';
 import NewsSourceList from '../../components/organisms/SourceList';
 import Header from '../../components/organisms/Header';
@@ -21,20 +20,27 @@ interface SourcesScreenProps {
 const SourcesScreen: React.FC<SourcesScreenProps> = ({
   navigation,
 }: SourcesScreenProps) => {
-  const sources = React.useContext(NewsSourcesContext);
-  const operationContext = React.useContext(OperationContext);
+  const appValue = React.useContext(AppContext);
+  const { initialized = false } = appValue ?? {};
+
+  const [sources, setSources] = React.useState<NewsSource[]>([]);
+  React.useEffect(() => {
+    if (initialized && appValue?.loadSources) {
+      const sources = appValue.loadSources();
+      setSources(sources ?? []);
+    }
+  }, [initialized]);
+
   const onSourceTouched = React.useCallback(
     (source: NewsSource) => {
-      if (operationContext !== null) {
-        operationContext.resetItems();
-      }
       navigation.navigate(SourcesScreenTypes.SourceItems, { source });
     },
-    [operationContext, navigation],
+    [navigation],
   );
   const onAddIconPressed = React.useCallback(() => {
     navigation.navigate(SourcesScreenTypes.NewSource);
   }, [navigation]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header

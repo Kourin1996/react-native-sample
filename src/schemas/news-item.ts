@@ -11,6 +11,7 @@ class NewsItemSchema {
       body: 'string',
       imageUrl: 'string?',
       published: 'date',
+      url: 'string?',
     },
   };
 
@@ -20,6 +21,7 @@ class NewsItemSchema {
   public body!: string;
   public imageUrl?: string;
   public published!: Date;
+  public url?: string;
 }
 
 export default NewsItemSchema;

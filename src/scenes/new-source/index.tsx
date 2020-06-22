@@ -2,7 +2,6 @@ import React from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import { Input, Button } from 'react-native-elements';
-import OperationContext from '../../hooks/operation-context';
 import Header from '../../components/organisms/Header';
 import {
   SourcesScreenTypes,
@@ -23,26 +22,21 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
     navigation.goBack();
   }, [navigation]);
 
-  const operationContext = React.useContext(OperationContext);
-
   const [name, setName] = React.useState('');
   const [url, setUrl] = React.useState('');
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const onAddPressed = React.useCallback(async () => {
-    if (operationContext !== null) {
-      setIsLoading(true);
+  const onAddPressed = React.useCallback(() => {
+    setIsLoading(true);
 
-      try {
-        await operationContext.addSource(name, url);
-        setIsLoading(false);
-        navigation.goBack();
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false);
-      }
+    try {
+      setIsLoading(false);
+      navigation.goBack();
+    } catch (error) {
+      console.error(error);
+      setIsLoading(false);
     }
-  }, [operationContext, setIsLoading, name, url]);
+  }, [setIsLoading, name, url]);
 
   return (
     <SafeAreaView style={styles.container}>

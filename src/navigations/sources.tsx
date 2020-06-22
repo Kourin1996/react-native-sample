@@ -1,8 +1,9 @@
 import React from 'react';
+import { NewsSource } from 'domains';
 import SourcesScreen from '../scenes/sources';
 import SourceItemsScreen from '../scenes/souce-items';
 import NewSourceScreen from '../scenes/new-source';
-import { NewsSource } from 'domains';
+import WebViewScreen from '../scenes/WebView';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createStackNavigator } = require('@react-navigation/stack');
@@ -14,14 +15,16 @@ export enum SourcesScreenTypes {
   Sources = 'Sources',
   SourceItems = 'SourceItems',
   NewSource = 'NewSource',
+  WebView = 'WebView',
 }
 
 export type SourcesStackParamList = {
-  Sources: void;
   SourceItems: {
     source?: NewsSource;
   };
-  NewSource: void;
+  WebView: {
+    url: string;
+  };
 };
 
 const SourcesScreenNavigation: React.FC<void> = () => {
@@ -38,6 +41,10 @@ const SourcesScreenNavigation: React.FC<void> = () => {
       <Stack.Screen
         name={SourcesScreenTypes.NewSource}
         component={NewSourceScreen}
+      />
+      <Stack.Screen
+        name={SourcesScreenTypes.WebView}
+        component={WebViewScreen}
       />
     </Stack.Navigator>
   );

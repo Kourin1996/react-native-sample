@@ -3,12 +3,19 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import HomeScreen from '../scenes/home';
+import HomeNavigation from './home';
 import SourcesNavigation from './sources';
+
+export enum AppScreensTypes {
+  Home = 'Home',
+  Sources = 'Sources',
+}
 
 const Tab = createBottomTabNavigator();
 
-const RootNavigation: React.FC<void> = () => {
+interface RootNavigationProps { }
+
+const RootNavigation: React.FC<RootNavigationProps> = () => {
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -38,8 +45,11 @@ const RootNavigation: React.FC<void> = () => {
             );
           },
         })}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Sources" component={SourcesNavigation} />
+        <Tab.Screen name={AppScreensTypes.Home} component={HomeNavigation} />
+        <Tab.Screen
+          name={AppScreensTypes.Sources}
+          component={SourcesNavigation}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );

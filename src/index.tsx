@@ -1,13 +1,11 @@
 import React from 'react';
 import Realm from 'realm';
-import { NewsSource, NewsItem } from './domains';
+import { NewsSource } from './domains';
 import { NewsSourceSchema, NewsItemSchema } from './schemas';
 import { NewsSourceRepository, NewsItemRepository } from './repositories';
-import NewsSourcesContext from './hooks/news-sources-context';
-import NewsItemsContext from './hooks/news-items-context';
-import OperationContext from './hooks/operation-context';
+import AppContext from './hooks/app-context';
 import Navigation from './navigations';
-import { fetchRssSourceInfo } from './utils/rss';
+import { fetchRssSourceInfo, fetchRssItems } from './utils/rss';
 
 const defaultSourceUrls = [
   'https://cointelegraph.com/rss',
@@ -36,10 +34,7 @@ const initializeSource = async (
 };
 
 const App: React.FC<void> = () => {
-  const [sources, setSources] = React.useState<NewsSource[]>([]);
-  const [items, setItems] = React.useState<NewsItem[]>([]);
-
-  const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = React.useState(false);
 
   const [
     newsSourceRepo,
@@ -50,9 +45,7 @@ const App: React.FC<void> = () => {
     setNewsItemRepo,
   ] = React.useState<NewsItemRepository | null>(null);
 
-  React.useEffect(() => {
-    setLoading(true);
-
+  React.useEffect(async () => {
     let realm: Realm | null = null;
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     Realm.open({
@@ -75,8 +68,7 @@ const App: React.FC<void> = () => {
         await initializeSource(newsSourceRepo, newsItemRepo);
       }
 
-      setSources(newsSourceRepo.getAll());
-      setLoading(false);
+      setInitialized(true);
     });
 
     () => {
@@ -108,7 +100,7 @@ const App: React.FC<void> = () => {
           imageUrl: item.imageUrl ?? source.logoUrl ?? '',
         }));
         await newsItemRepo.putItems(itemsWithSourceId);
-        setSources(newsSourceRepo.getAll());
+
         return source;
       } catch (error) {
         console.error(error);
@@ -118,39 +110,38 @@ const App: React.FC<void> = () => {
     [newsSourceRepo, newsItemRepo],
   );
 
-  const loadItemsBySource = React.useCallback(
-    (source?: NewsSource) => {
+  const loadSources = React.useCallback(() => {
+    if (newsSourceRepo !== null) {
+      return newsSourceRepo.getAll();
+    }
+  }, [newsSourceRepo]);
+
+  const loadItems = React.useCallback(
+    (source?: NewsSource, limit = 20, offset = 0) => {
       if (newsItemRepo !== null) {
         if (source?.id !== undefined) {
-          setItems(newsItemRepo.getItemsBySourceIndex(source.id, 15));
+          return newsItemRepo.getItemsBySourceIndex(source.id, limit, offset);
         } else {
-          setItems(newsItemRepo.getItems(15));
+          return newsItemRepo.getItems(limit, offset);
         }
       }
     },
-    [newsItemRepo, setItems],
+    [newsItemRepo],
   );
 
-  const resetItems = React.useCallback(() => {
-    setItems([]);
-  }, [setItems]);
-
-  const operations = React.useMemo(() => {
+  const appContextValue = React.useMemo(() => {
     return {
+      initialized,
       addSource,
-      loadItemsBySource,
-      resetItems,
+      loadSources,
+      loadItems,
     };
-  }, [addSource, loadItemsBySource, resetItems]);
+  }, [initialized, addSource, loadSources, loadItems]);
 
   return (
-    <NewsSourcesContext.Provider value={sources}>
-      <NewsItemsContext.Provider value={items}>
-        <OperationContext.Provider value={operations}>
-          <Navigation />
-        </OperationContext.Provider>
-      </NewsItemsContext.Provider>
-    </NewsSourcesContext.Provider>
+    <AppContext.Provider value={appContextValue}>
+      <Navigation />
+    </AppContext.Provider>
   );
 };
 

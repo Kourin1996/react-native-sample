@@ -1,28 +1,35 @@
 import React from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
-import OperationContext from '../../hooks/operation-context';
+import { NavigationScreenProp } from 'react-navigation';
+import AppContext from '../../hooks/app-context';
 import Header from '../../components/organisms/Header';
 import MagazineList from '../../components/organisms/MagazineList';
 import { NewsItem } from 'domains';
-import NewsItemContext from '../../hooks/news-items-context';
+import { HomeStackParamList, HomeScreensTypes } from '../../navigations/home';
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface HomeScreenProps {}
+interface HomeScreenProps {
+  navigation: NavigationScreenProp<
+    HomeStackParamList,
+    HomeScreensTypes.Home
+  >;
+}
 
-const HomeScreen: React.FC<HomeScreenProps> = () => {
-  const items = React.useContext(NewsItemContext);
-  const onItemTouched = React.useCallback((item: NewsItem) => {
-    console.log('touched', item);
-  }, []);
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }: HomeScreenProps) => {
+  const appValue = React.useContext(AppContext);
+  const { initialized = false } = appValue ?? {};
 
-  const operationContext = React.useContext(OperationContext);
+  const [items, setItems] = React.useState<NewsItem[]>([]);
   React.useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    (async (): Promise<void> => {
-      await operationContext?.loadItemsBySource();
-    })();
-    console.log('Home::useEffect');
-  }, [operationContext?.loadItemsBySource]);
+    if (initialized && appValue?.loadItems) {
+      const items = appValue.loadItems();
+      setItems(items ?? []);
+    }
+  }, [initialized]);
+
+  const onItemTouched = React.useCallback((item: NewsItem) => {
+    navigation.navigate(HomeScreensTypes.WebView, { url: item?.url ?? '' });
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>

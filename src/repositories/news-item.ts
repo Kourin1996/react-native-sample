@@ -64,6 +64,7 @@ export default class NewsItemRepository {
       body: object.body,
       imageUrl: object.imageUrl,
       published: object.published,
+      url: object.url,
     };
   };
 }

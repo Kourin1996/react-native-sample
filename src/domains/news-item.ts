@@ -5,6 +5,7 @@ type NewsItem = {
   body: string;
   imageUrl?: string;
   published: Date;
+  url?: string;
 };
 
 export default NewsItem;
