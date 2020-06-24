@@ -1,25 +1,43 @@
 import React from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, VirtualizedList, StyleSheet } from 'react-native';
 import { NewsItem } from 'domains';
 import MagazineItem from '../../molecules/MagazineItem';
+
+const NUM_OF_INITIAL_RENDER_ITEMS = 10;
 
 interface MagazineListProps {
   items: NewsItem[];
   onItemTouched: (item: NewsItem) => void;
+  onScrolledEnd: (currentNum: number) => void;
 }
 
 const MagazineList: React.FC<MagazineListProps> = (
   props: MagazineListProps,
 ) => {
-  const { items, onItemTouched } = props;
+  const { items, onItemTouched, onScrolledEnd } = props;
+
+  const onEndReached = React.useCallback(() => {
+    onScrolledEnd(items.length);
+  }, [items, onScrolledEnd]);
+
   return (
-    <FlatList
+    <VirtualizedList
       style={styles.container}
+      initialNumToRender={NUM_OF_INITIAL_RENDER_ITEMS}
       data={items}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <MagazineItem item={item} onItemTouched={onItemTouched} />
+      keyExtractor={(item: NewsItem & { index: number }) =>
+        item.id ?? item.index.toString()
+      }
+      renderItem={({ item }: { item: NewsItem }) => (
+        <MagazineItem key={item.id} item={item} onItemTouched={onItemTouched} />
       )}
+      getItem={(data, index): NewsItem & { index: number } => ({
+        index,
+        ...data[index],
+      })}
+      onEndReachedThreshold={0.5}
+      onEndReached={onEndReached}
+      getItemCount={() => items.length}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
     />
   );

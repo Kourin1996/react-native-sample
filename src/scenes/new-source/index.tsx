@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, SafeAreaView, StyleSheet } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
+import AppContext from '../../hooks/app-context';
 import { Input, Button } from 'react-native-elements';
 import Header from '../../components/organisms/Header';
 import {
@@ -18,6 +19,8 @@ interface NewSourceScreenProps {
 const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
   navigation,
 }: NewSourceScreenProps) => {
+  const appValue = React.useContext(AppContext);
+
   const onBackIconPressed = React.useCallback(() => {
     navigation.goBack();
   }, [navigation]);
@@ -26,17 +29,18 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
   const [url, setUrl] = React.useState('');
 
   const [isLoading, setIsLoading] = React.useState(false);
-  const onAddPressed = React.useCallback(() => {
+  const onAddPressed = React.useCallback(async () => {
     setIsLoading(true);
 
     try {
+      await appValue?.addSource(name, url);
       setIsLoading(false);
       navigation.goBack();
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
-  }, [setIsLoading, name, url]);
+  }, [appValue, navigation, setIsLoading, name, url]);
 
   return (
     <SafeAreaView style={styles.container}>

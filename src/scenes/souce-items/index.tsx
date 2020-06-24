@@ -28,12 +28,19 @@ const SourceItems: React.FC<SourceItemsScreenProps> = ({
   const { source } = route.params;
 
   const [items, setItems] = React.useState<NewsItem[]>([]);
+  const [loading, setLoading] = React.useState(false);
+
   React.useEffect(() => {
-    if (initialized && appValue?.loadItems) {
-      const items = appValue.loadItems(source);
+    if (initialized && !loading && appValue?.loadItems) {
+      setLoading(true);
+      const items = appValue.loadItems(source, 10);
       setItems(items ?? []);
+      setLoading(false);
     }
-  }, [initialized, source]);
+    return () => {
+
+    }
+  }, [initialized, loading, source, setLoading]);
 
   const onItemTouched = React.useCallback((item: NewsItem) => {
     navigation.navigate(SourcesScreenTypes.WebView, { url: item?.url ?? '' })
@@ -41,6 +48,16 @@ const SourceItems: React.FC<SourceItemsScreenProps> = ({
   const onBackIconPressed = React.useCallback(() => {
     navigation.goBack();
   }, [navigation]);
+
+  const onScrolledEnd = React.useCallback((currentNum: number) => {
+    if (initialized && !loading && appValue?.loadItems) {
+      setLoading(true);
+      const items = appValue.loadItems(source, undefined, currentNum);
+
+      setItems(prevItems => [...prevItems, ...(items ?? [])]);
+      setLoading(false);
+    }
+  }, [initialized, loading, setItems, setLoading]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,7 +70,7 @@ const SourceItems: React.FC<SourceItemsScreenProps> = ({
         centerComponent={{ text: source?.name, style: { color: '#fff' } }}
       />
       <View style={styles.itemListContainer}>
-        <MagazineList items={items} onItemTouched={onItemTouched} />
+        <MagazineList items={items} onItemTouched={onItemTouched} onScrolledEnd={onScrolledEnd} />
       </View>
     </SafeAreaView>
   );

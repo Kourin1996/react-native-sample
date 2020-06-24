@@ -5,7 +5,7 @@ import { NewsSourceSchema, NewsItemSchema } from './schemas';
 import { NewsSourceRepository, NewsItemRepository } from './repositories';
 import AppContext from './hooks/app-context';
 import Navigation from './navigations';
-import { fetchRssSourceInfo, fetchRssItems } from './utils/rss';
+import { fetchRssSourceInfo } from './utils/rss';
 
 const defaultSourceUrls = [
   'https://cointelegraph.com/rss',

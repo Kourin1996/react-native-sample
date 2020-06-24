@@ -19,13 +19,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   const { initialized = false } = appValue ?? {};
 
   const [items, setItems] = React.useState<NewsItem[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    if (initialized && appValue?.loadItems) {
-      const items = appValue.loadItems();
+    if (initialized && !loading && appValue?.loadItems) {
+      setLoading(true);
+      const items = appValue.loadItems(undefined, 10);
       setItems(items ?? []);
+      setLoading(false);
     }
-  }, [initialized]);
+    return () => { };
+  }, [initialized, loading, setItems, setLoading]);
 
   const onItemTouched = React.useCallback(
     (item: NewsItem) => {
@@ -34,13 +38,24 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     [navigation],
   );
 
+  const onScrolledEnd = React.useCallback((currentNum: number) => {
+    if (initialized && !loading && appValue?.loadItems) {
+      setLoading(true);
+      const items = appValue.loadItems(undefined, undefined, currentNum);
+
+      console.log("newItems", items)
+      setItems(prevItems => [...prevItems, ...(items ?? [])]);
+      setLoading(false);
+    }
+  }, [initialized, loading, setItems, setLoading]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
-        centerComponent={{ text: 'MY TITLE', style: { color: '#fff' } }}
+        centerComponent={{ text: 'RSS Feeds', style: { color: '#fff' } }}
       />
       <View style={styles.itemListContainer}>
-        <MagazineList items={items} onItemTouched={onItemTouched} />
+        <MagazineList items={items} onItemTouched={onItemTouched} onScrolledEnd={onScrolledEnd} />
       </View>
     </SafeAreaView>
   );
