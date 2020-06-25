@@ -25,6 +25,9 @@ export type SourcesStackParamList = {
   WebView: {
     url: string;
   };
+  Sources: {
+    onNewSourceAdded: (source: NewsSource) => void;
+  };
 };
 
 const SourcesScreenNavigation: React.FC<void> = () => {

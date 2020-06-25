@@ -42,7 +42,6 @@ const getFirstImageFromFeedItem = (
 
 const parseRssItem = (item: RssParser.FeedItem): NewsItem => {
   const imageUrl = getFirstImageFromFeedItem(item);
-  console.log('parseRssItem', item.links);
   return {
     title: item.title,
     body: item.description.replace(/(<\/?[^>]+(>|$))|(\n)|(\s\s+)/g, ''),

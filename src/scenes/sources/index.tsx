@@ -31,14 +31,21 @@ const SourcesScreen: React.FC<SourcesScreenProps> = ({
     }
   }, [initialized]);
 
+  const onNewSourceAdded = React.useCallback((newSource: NewsSource) => {
+    if (initialized && appValue?.loadSources) {
+      const sources = appValue.loadSources();
+      setSources(sources ?? []);
+    }
+  }, [initialized, appValue, setSources]);
+
   const onSourceTouched = React.useCallback(
     (source: NewsSource) => {
       navigation.navigate(SourcesScreenTypes.SourceItems, { source });
     },
-    [navigation],
+    [navigation, onNewSourceAdded],
   );
   const onAddIconPressed = React.useCallback(() => {
-    navigation.navigate(SourcesScreenTypes.NewSource);
+    navigation.navigate(SourcesScreenTypes.NewSource, { onNewSourceAdded });
   }, [navigation]);
 
   return (

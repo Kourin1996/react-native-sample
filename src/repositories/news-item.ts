@@ -12,15 +12,23 @@ export default class NewsItemRepository {
     this._tableName = tableName;
   }
 
-  getNumberOfSources = (): number => {
+  getNumberOfItems = (): number => {
     const objects = this._getObjects();
     return objects.length;
+  };
+
+  getLatestItem = (sourceId?: number): NewsItem | undefined => {
+    const objects = this._getObjects();
+    const items = objects
+      .filtered(sourceId !== undefined ? `sourceId = "${sourceId}"` : '')
+      .sorted('id', true);
+    return items.length > 0 ? this._objectToItem(items[0]) : undefined;
   };
 
   getItems = (limit = 20, offset = 0): NewsItem[] => {
     const objects = this._getObjects();
     return objects
-      .sorted('published')
+      .sorted('published', true)
       .slice(offset, limit)
       .map(this._objectToItem);
   };
@@ -33,13 +41,13 @@ export default class NewsItemRepository {
     const objects = this._getObjects();
     return objects
       .filtered(`sourceId = "${sourceId}"`)
-      .sorted('published')
+      .sorted('published', true)
       .slice(offset, limit)
       .map(this._objectToItem);
   };
 
   putItems = (items: NewsItem[]): Promise<NewsItem[]> => {
-    const currentSize = this.getNumberOfSources();
+    const currentSize = this.getNumberOfItems();
     return new Promise((resolve) => {
       this._realm.write(() => {
         const itemsWithIds = items.map((item, index) => {

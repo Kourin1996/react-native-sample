@@ -23,10 +23,7 @@ const MagazineItem: React.FC<MagazineItemProps> = (
   return (
     <TouchableHighlight onPress={onPress} underlayColor="white">
       <View style={styles.container}>
-        {/* For Image */}
-        <View>
-          <Image source={{ uri: item.imageUrl }} style={styles.image} />
-        </View>
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
         <View style={styles.rightColumnContainer}>
           <Text style={styles.title} numberOfLines={2}>
             {item.title}

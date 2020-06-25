@@ -10,6 +10,7 @@ export interface AppContextValue {
     limit?: number,
     offset?: number,
   ) => NewsItem[] | undefined;
+  updateItems: () => Promise<void>;
 }
 
 const AppContext = React.createContext<AppContextValue | null>(null);

@@ -37,8 +37,8 @@ const SourceItems: React.FC<SourceItemsScreenProps> = ({
       setItems(items ?? []);
       setLoading(false);
     }
-    return () => {
 
+    return () => {
     }
   }, [initialized, loading, source, setLoading]);
 

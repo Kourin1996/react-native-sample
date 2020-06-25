@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, SafeAreaView, StyleSheet } from 'react-native';
+import { View, SafeAreaView, StyleSheet, ActivityIndicator } from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
+import { Icon } from 'react-native-elements'
 import AppContext from '../../hooks/app-context';
 import Header from '../../components/organisms/Header';
 import MagazineList from '../../components/organisms/MagazineList';
@@ -42,17 +43,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
     if (initialized && !loading && appValue?.loadItems) {
       setLoading(true);
       const items = appValue.loadItems(undefined, undefined, currentNum);
-
-      console.log("newItems", items)
       setItems(prevItems => [...prevItems, ...(items ?? [])]);
       setLoading(false);
     }
   }, [initialized, loading, setItems, setLoading]);
 
+  const [updating, setUpdating] = React.useState(false);
+  const onReloadIconPressed = React.useCallback(async () => {
+    if (appValue && updating !== true) {
+      setUpdating(true);
+      await appValue?.updateItems();
+      setItems(appValue?.loadItems(undefined, 10) ?? []);
+      setUpdating(false);
+    }
+  }, [updating, setUpdating, appValue, setItems]);
+
   return (
     <SafeAreaView style={styles.container}>
       <Header
         centerComponent={{ text: 'RSS Feeds', style: { color: '#fff' } }}
+        rightComponent={() => {
+          return updating === false ? <Icon name="refresh" color="#fff" onPress={onReloadIconPressed} /> : <ActivityIndicator size="small" color="#fff" />
+        }}
       />
       <View style={styles.itemListContainer}>
         <MagazineList items={items} onItemTouched={onItemTouched} onScrolledEnd={onScrolledEnd} />

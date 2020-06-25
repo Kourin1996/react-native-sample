@@ -8,8 +8,10 @@ import {
   SourcesScreenTypes,
   SourcesStackParamList,
 } from '../../navigations/sources';
+import { RouteProp } from '@react-navigation/native';
 
 interface NewSourceScreenProps {
+  route: RouteProp<SourcesStackParamList, SourcesScreenTypes.Sources>;
   navigation: NavigationScreenProp<
     SourcesStackParamList,
     SourcesScreenTypes.NewSource
@@ -17,6 +19,7 @@ interface NewSourceScreenProps {
 }
 
 const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
+  route,
   navigation,
 }: NewSourceScreenProps) => {
   const appValue = React.useContext(AppContext);
@@ -33,8 +36,11 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
     setIsLoading(true);
 
     try {
-      await appValue?.addSource(name, url);
+      const source = await appValue?.addSource(name, url);
       setIsLoading(false);
+      if (source) {
+        route.params.onNewSourceAdded(source);
+      }
       navigation.goBack();
     } catch (error) {
       console.error(error);
@@ -59,7 +65,7 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
         <View>
           <Input label="RSS URL" value={url} onChangeText={setUrl} />
         </View>
-        <View>
+        <View style={styles.addButton}>
           <Button
             title="Add New Source"
             loading={isLoading}
@@ -79,6 +85,11 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     paddingVertical: 20,
+  },
+  addButton: {
+    width: 300,
+    marginLeft: 'auto',
+    marginRight: 'auto',
   },
 });
 
