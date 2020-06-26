@@ -60,7 +60,7 @@ const SourceItems: React.FC<SourceItemsScreenProps> = ({
   }, [initialized, loading, setItems, setLoading]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
       <Header
         leftComponent={{
           icon: 'arrow-back',
@@ -80,9 +80,11 @@ const SourceItems: React.FC<SourceItemsScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#3488C0'
   },
   itemListContainer: {
     flex: 1,
+    backgroundColor: 'white'
   },
 });
 

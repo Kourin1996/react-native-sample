@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import {
   Header as RneHeader,
   HeaderProps as RneHeaderProps,
@@ -9,12 +9,16 @@ type HeaderProps = RneHeaderProps;
 
 const Header: React.FC<HeaderProps> = (props: RneHeaderProps) => {
   return (
-    <RneHeader
-      barStyle="light-content"
-      backgroundColor="transparent"
-      containerStyle={styles.container}
-      {...props}
-    />
+    <>
+      <RneHeader
+        statusBarProps={{
+          barStyle: 'light-content',
+          backgroundColor: '#3488C0',
+        }}
+        containerStyle={styles.container}
+        {...props}
+      />
+    </>
   );
 };
 

@@ -25,7 +25,7 @@ export default class NewsItemRepository {
     return items.length > 0 ? this._objectToItem(items[0]) : undefined;
   };
 
-  getItems = (limit = 20, offset = 0): NewsItem[] => {
+  getItems = (limit = 10, offset = 0): NewsItem[] => {
     const objects = this._getObjects();
     return objects
       .sorted('published', true)
@@ -35,7 +35,7 @@ export default class NewsItemRepository {
 
   getItemsBySourceIndex = (
     sourceId: number,
-    limit = 20,
+    limit = 10,
     offset = 0,
   ): NewsItem[] => {
     const objects = this._getObjects();

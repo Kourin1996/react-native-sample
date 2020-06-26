@@ -1,5 +1,10 @@
 import React from 'react';
-import { SafeAreaView, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  SafeAreaView,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import { NavigationScreenProp } from 'react-navigation';
 import Header from '../../components/organisms/Header';
 import { HomeStackParamList, HomeScreensTypes } from '../../navigations/home';
@@ -25,7 +30,7 @@ const WebViewScreen: React.FC<WebViewProps> = ({
   const { url } = route.params;
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
       <Header
         leftComponent={{
           icon: 'arrow-back',
@@ -34,7 +39,16 @@ const WebViewScreen: React.FC<WebViewProps> = ({
         }}
         centerComponent={{ text: url, style: { color: '#fff' } }}
       />
-      <WebView style={styles.webview} source={{ uri: url }} />
+      <WebView
+        style={styles.webview}
+        source={{ uri: url }}
+        startInLoadingState={true}
+        renderLoading={() => (
+          <View style={styles.spinnerContainer}>
+            <ActivityIndicator size="large" color="#3488C0" />
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 };
@@ -42,9 +56,17 @@ const WebViewScreen: React.FC<WebViewProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#3488C0',
   },
   webview: {
     flex: 1,
+    backgroundColor: 'white',
+  },
+  spinnerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+    width: '100%',
   },
 });
 

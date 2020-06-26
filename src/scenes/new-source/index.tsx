@@ -49,7 +49,7 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
   }, [appValue, navigation, setIsLoading, name, url]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
       <Header
         leftComponent={{
           icon: 'arrow-back',
@@ -80,11 +80,13 @@ const NewSourceScreen: React.FC<NewSourceScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#3488C0',
   },
   formContainer: {
     flex: 1,
     paddingTop: 20,
     paddingVertical: 20,
+    backgroundColor: 'white',
   },
   addButton: {
     width: 300,

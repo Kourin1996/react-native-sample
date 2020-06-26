@@ -49,7 +49,7 @@ const SourcesScreen: React.FC<SourcesScreenProps> = ({
   }, [navigation]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
       <Header
         centerComponent={{ text: 'Sources', style: { color: '#fff' } }}
         rightComponent={{
@@ -68,9 +68,11 @@ const SourcesScreen: React.FC<SourcesScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#3488C0'
   },
   sourceListContainer: {
     flex: 1,
+    backgroundColor: 'white'
   },
 });
 

@@ -59,7 +59,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
   }, [updating, setUpdating, appValue, setItems]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView forceInset={{ top: 'always' }} style={styles.container}>
       <Header
         centerComponent={{ text: 'RSS Feeds', style: { color: '#fff' } }}
         rightComponent={() => {
@@ -76,9 +76,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#3488C0'
   },
   itemListContainer: {
     flex: 1,
+    backgroundColor: 'white'
   },
 });
 
